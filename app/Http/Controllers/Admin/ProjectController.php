@@ -29,15 +29,16 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
+            'title'    => 'required|string|max:255',
+            'author'   => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
-            'content' => 'nullable|string',
+            'content'  => 'nullable|string',
         ]);
 
         Project::create($data);
 
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.index')
+            ->with('success', 'Progetto creato con successo!');
     }
 
     public function show(Project $project)

@@ -9,14 +9,13 @@
 </head>
 <body class="bg-light text-dark">
 
-    {{-- NAVBAR --}}
+    {{-- ── NAVBAR ─────────────────────────────────── --}}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-danger">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ url('/') }}">Il Blog</a>
 
             <button class="navbar-toggler" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#mainNav"
-                    aria-controls="mainNav" aria-expanded="false" aria-label="Apri navigazione">
+                    data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -28,10 +27,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('projects.index') }}">Post</a>
                     </li>
-
                     @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.index') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger btn-sm ms-2" href="{{ route('projects.create') }}">
+                                + Nuovo progetto
+                            </a>
                         </li>
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -51,7 +54,7 @@
         </div>
     </nav>
 
-    {{-- PAGE HEADER --}}
+    {{-- ── PAGE HEADER ──────────────────────────────── --}}
     @hasSection('page-header')
         <header class="bg-dark text-white py-4 mb-4">
             <div class="container text-center">
@@ -60,12 +63,12 @@
         </header>
     @endif
 
-    {{-- FLASH MESSAGES --}}
+    {{-- ── FLASH MESSAGES ───────────────────────────── --}}
     @if (session('success'))
         <div class="container mt-3">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </div>
     @endif
@@ -74,17 +77,17 @@
         <div class="container mt-3">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </div>
     @endif
 
-    {{-- MAIN --}}
+    {{-- ── MAIN ─────────────────────────────────────── --}}
     <main class="container py-4">
         @yield('content')
     </main>
 
-    {{-- FOOTER --}}
+    {{-- ── FOOTER ───────────────────────────────────── --}}
     <footer class="bg-dark text-white-50 py-3 mt-5 border-top border-danger">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
             <span>
@@ -94,9 +97,9 @@
             </span>
             <span>
                 Realizzato con
-                <a href="https://laravel.com" class="text-white-50" target="_blank" rel="noopener noreferrer">Laravel</a>
+                <a href="https://laravel.com" class="text-white-50" target="_blank">Laravel</a>
                 &amp;
-                <a href="https://getbootstrap.com" class="text-white-50" target="_blank" rel="noopener noreferrer">Bootstrap</a>
+                <a href="https://getbootstrap.com" class="text-white-50" target="_blank">Bootstrap</a>
             </span>
         </div>
     </footer>
