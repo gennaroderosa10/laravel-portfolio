@@ -3,7 +3,7 @@
 @section('title', $project->title)
 
 @section('page-header')
-    <span class="badge bg-danger mb-3">{{ $project->category }}</span>
+    <span class="badge bg-danger mb-3">{{ $project->type?->name }}</span>
     <h1 class="fw-bold mb-2">{{ $project->title }}</h1>
     <p class="text-white-50 mb-0">
         di <strong class="text-white">{{ $project->author }}</strong>

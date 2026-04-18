@@ -18,8 +18,8 @@
                 <div class="card mb-4 shadow-sm border-0">
                     <div class="card-body p-4">
 
-                        {{-- Categoria --}}
-                        <span class="badge bg-danger mb-2">{{ $post->category }}</span>
+                        {{-- Type --}}
+                        <span class="badge bg-danger mb-2">{{ $post->type?->name }}</span>
 
                         {{-- Titolo --}}
                         <h2 class="card-title h4 fw-bold mb-1">
@@ -61,17 +61,17 @@
         {{-- SIDEBAR --}}
         <aside class="col-lg-4">
 
-            {{-- Widget categorie --}}
+            {{-- Widget types --}}
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-dark text-white fw-bold">
-                    Categorie
+                    Tipi
                 </div>
                 <ul class="list-group list-group-flush">
-                    @foreach ($categories as $category)
+                    @foreach ($types as $type)
                         <li class="list-group-item">
-                            <a href="{{ route('projects.index', ['category' => $category->category]) }}"
+                            <a href="{{ route('projects.index', ['type_id' => $type->id]) }}"
                                class="text-decoration-none text-dark">
-                                {{ $category->category }}
+                                {{ $type->name }}
                             </a>
                         </li>
                     @endforeach

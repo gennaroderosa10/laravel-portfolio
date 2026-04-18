@@ -4,35 +4,36 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::latest()->paginate(6);
+        $projects = Project::with('type')->latest()->paginate(6);
 
-        $categories = Project::select('category')
-            ->distinct()
-            ->get();
+        $types = Type::all();
 
-        $latestProjects = Project::latest()->take(5)->get();
+        $latestProjects = Project::with('type')->latest()->take(5)->get();
 
-        return view('projects.index', compact('projects', 'categories', 'latestProjects'));
+        return view('projects.index', compact('projects', 'types', 'latestProjects'));
     }
 
     public function create()
     {
-        return view('projects.create');
+        $types = Type::all();
+
+        return view('projects.create', compact('types'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'    => 'required|string|max:255',
-            'author'   => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'content'  => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'type_id' => 'required|exists:types,id',
+            'content' => 'nullable|string',
         ]);
 
         Project::create($data);
@@ -43,21 +44,25 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $project->load('type');
+
         return view('projects.show', compact('project'));
     }
 
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        $types = Type::all();
+
+        return view('projects.edit', compact('project', 'types'));
     }
 
     public function update(Request $request, Project $project)
     {
         $data = $request->validate([
-            'title'    => 'required|string|max:255',
-            'author'   => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'content'  => 'nullable|string',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'type_id' => 'required|exists:types,id',
+            'content' => 'nullable|string',
         ]);
 
         $project->update($data);

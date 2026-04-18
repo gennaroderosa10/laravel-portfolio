@@ -50,18 +50,22 @@
                             @enderror
                         </div>
 
-                        {{-- Categoria --}}
+                        {{-- Type --}}
                         <div class="mb-3">
-                            <label for="category" class="form-label fw-semibold">Categoria</label>
-                            <input
-                                type="text"
-                                id="category"
-                                name="category"
-                                class="form-control @error('category') is-invalid @enderror"
-                                value="{{ old('category') }}"
-                                placeholder="Es: Tecnologia, Arte, Sport..."
+                            <label for="type_id" class="form-label fw-semibold">Tipo</label>
+                            <select
+                                id="type_id"
+                                name="type_id"
+                                class="form-select @error('type_id') is-invalid @enderror"
                             >
-                            @error('category')
+                                <option value="">Seleziona un tipo</option>
+                                @foreach ($types as $type)
+                                    <option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>
+                                        {{ $type->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('type_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

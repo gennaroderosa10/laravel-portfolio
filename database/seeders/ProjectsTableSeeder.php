@@ -3,25 +3,25 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Type;
 use Illuminate\Database\Seeder;
-
 use Faker\Generator as Faker;
 
 class ProjectsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(Faker $faker): void
     {
-        for ($i = 0; $i < 10; $i++) {
+        if (Type::count() === 0) {
+            $this->command->warn('Nessun type presente nella tabella types.');
+            return;
+        }
 
+        for ($i = 0; $i < 10; $i++) {
             $newProject = new Project();
 
             $newProject->title = $faker->sentence();
             $newProject->author = $faker->name();
-            $newProject->category = $faker->word();
+            $newProject->type_id = Type::inRandomOrder()->value('id');
             $newProject->content = $faker->paragraph(12);
 
             $newProject->save();
