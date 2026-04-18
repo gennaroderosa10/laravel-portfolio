@@ -1,29 +1,55 @@
-@extends('layouts.app')
+@extends('layouts.projects')
+
+@section('title', 'Profilo')
+
+@section('page-header')
+    <h1 class="fw-bold mb-1">Profilo</h1>
+    <p class="text-white-50 mb-0">Gestisci le tue informazioni personali</p>
+@endsection
+
 @section('content')
 
-<div class="container">
-    <h2 class="fs-4 text-secondary my-4">
-        {{ __('Profile') }}
-    </h2>
-    <div class="card p-4 mb-4 bg-white shadow rounded-lg">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-        @include('profile.partials.update-profile-information-form')
+            {{-- Informazioni profilo --}}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white fw-bold">
+                    Informazioni profilo
+                </div>
+                <div class="card-body p-4">
+                    @include('profile.partials.update-profile-information-form')
+                </div>
+            </div>
 
+            {{-- Aggiorna password --}}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-dark text-white fw-bold">
+                    Aggiorna password
+                </div>
+                <div class="card-body p-4">
+                    @include('profile.partials.update-password-form')
+                </div>
+            </div>
+
+            {{-- Elimina account --}}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-danger text-white fw-bold">
+                    Elimina account
+                </div>
+                <div class="card-body p-4">
+                    @include('profile.partials.delete-user-form')
+                </div>
+            </div>
+
+            {{-- Torna alla home --}}
+            <div class="mb-5">
+                <a href="{{ url('/') }}" class="btn btn-outline-dark">
+                    &larr; Torna alla home
+                </a>
+            </div>
+
+        </div>
     </div>
-
-    <div class="card p-4 mb-4 bg-white shadow rounded-lg">
-
-
-        @include('profile.partials.update-password-form')
-
-    </div>
-
-    <div class="card p-4 mb-4 bg-white shadow rounded-lg">
-
-
-        @include('profile.partials.delete-user-form')
-
-    </div>
-</div>
 
 @endsection

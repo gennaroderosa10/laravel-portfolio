@@ -54,21 +54,23 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
+            'title'    => 'required|string|max:255',
+            'author'   => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
-            'content' => 'nullable|string',
+            'content'  => 'nullable|string',
         ]);
 
         $project->update($data);
 
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.show', $project)
+            ->with('success', 'Progetto aggiornato con successo!');
     }
 
     public function destroy(Project $project)
     {
         $project->delete();
 
-        return redirect()->route('projects.index');
+        return redirect()->route('projects.index')
+            ->with('success', 'Progetto eliminato con successo!');
     }
 }

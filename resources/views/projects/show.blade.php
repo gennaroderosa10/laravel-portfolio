@@ -22,14 +22,62 @@
                 </div>
             </div>
 
-            {{-- Bottone torna indietro --}}
-            <div class="mt-4">
+            {{-- Bottoni azione --}}
+            <div class="d-flex gap-2 mt-4">
                 <a href="{{ route('projects.index') }}" class="btn btn-outline-dark">
                     &larr; Torna alla lista
                 </a>
+                @auth
+                    <a href="{{ route('projects.edit', $project) }}" class="btn btn-danger">
+                        Modifica
+                    </a>
+
+                    {{-- Apre il modale --}}
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalElimina">
+                        Elimina
+                    </button>
+                @endauth
             </div>
 
         </div>
     </div>
+
+    {{-- ── MODALE CONFERMA ELIMINAZIONE ────────────── --}}
+    @auth
+        <div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="modalEliminaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="modalEliminaLabel">Conferma eliminazione</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Sei sicuro di voler eliminare il post <strong>{{ $project->title }}</strong>?
+                        <br>
+                        <span class="text-muted small">Questa operazione è irreversibile.</span>
+                    </div>
+
+                    <div class="modal-footer">
+                        {{-- No: chiude il modale --}}
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                            No, annulla
+                        </button>
+
+                        {{-- Sì: invia la DELETE --}}
+                        <form action="{{ route('projects.destroy', $project) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                Sì, elimina
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endauth
 
 @endsection

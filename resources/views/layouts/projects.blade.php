@@ -32,6 +32,9 @@
                             <a class="nav-link" href="{{ route('admin.index') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profile.edit') }}">Profilo</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="btn btn-danger btn-sm ms-2" href="{{ route('projects.create') }}">
                                 + Nuovo progetto
                             </a>
