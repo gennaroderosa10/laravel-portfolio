@@ -70,6 +70,32 @@
                             @enderror
                         </div>
 
+                        {{-- Technologies --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold d-block">Tecnologie</label>
+                            @foreach ($technologies as $technology)
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="technologies[]"
+                                        value="{{ $technology->id }}"
+                                        id="technology-{{ $technology->id }}"
+                                        {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}
+                                    >
+                                    <label class="form-check-label" for="technology-{{ $technology->id }}">
+                                        {{ $technology->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                            @error('technologies')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                            @error('technologies.*')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         {{-- Contenuto --}}
                         <div class="mb-4">
                             <label for="content" class="form-label fw-semibold">Contenuto</label>

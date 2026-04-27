@@ -35,6 +35,8 @@ Route::middleware(['auth', 'verified'])
 
 //forse posts al posto di projects, se non funziona provare a cambiare
 Route::resource("projects", ProjectController::class);
+
+// bypassiamo il login commentando il middleware
 // ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

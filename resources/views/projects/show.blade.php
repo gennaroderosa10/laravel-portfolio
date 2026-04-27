@@ -19,6 +19,16 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4 p-md-5">
                     <p class="lead">{{ $project->content }}</p>
+
+                    @if ($project->technologies->isNotEmpty())
+                        <hr>
+                        <h5 class="fw-bold mb-3">Tecnologie usate</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach ($project->technologies as $technology)
+                                <span class="badge bg-secondary">{{ $technology->name }}</span>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -32,7 +42,6 @@
                         Modifica
                     </a>
 
-                    {{-- Apre il modale --}}
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalElimina">
                         Elimina
                     </button>
@@ -42,7 +51,6 @@
         </div>
     </div>
 
-    {{-- ── MODALE CONFERMA ELIMINAZIONE ────────────── --}}
     @auth
         <div class="modal fade" id="modalElimina" tabindex="-1" aria-labelledby="modalEliminaLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -60,12 +68,10 @@
                     </div>
 
                     <div class="modal-footer">
-                        {{-- No: chiude il modale --}}
                         <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
                             No, annulla
                         </button>
 
-                        {{-- Sì: invia la DELETE --}}
                         <form action="{{ route('projects.destroy', $project) }}" method="POST">
                             @csrf
                             @method('DELETE')

@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with('type')->latest()->paginate(6);
+        $projects = Project::with(['type', 'technologies'])->latest()->paginate(6);
 
         $types = Type::all();
 
-        $latestProjects = Project::with('type')->latest()->take(5)->get();
+        $latestProjects = Project::with(['type', 'technologies'])->latest()->take(5)->get();
 
         return view('projects.index', compact('projects', 'types', 'latestProjects'));
     }
@@ -23,8 +24,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view('projects.create', compact('types'));
+        return view('projects.create', compact('types', 'technologies'));
     }
 
     public function store(Request $request)
@@ -34,9 +36,18 @@ class ProjectController extends Controller
             'author' => 'required|string|max:255',
             'type_id' => 'required|exists:types,id',
             'content' => 'nullable|string',
+            'technologies' => 'nullable|array',
+            'technologies.*' => 'exists:technologies,id',
         ]);
 
-        Project::create($data);
+        $project = Project::create([
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'type_id' => $data['type_id'],
+            'content' => $data['content'] ?? null,
+        ]);
+
+        $project->technologies()->sync($data['technologies'] ?? []);
 
         return redirect()->route('projects.index')
             ->with('success', 'Progetto creato con successo!');
@@ -44,7 +55,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project->load('type');
+        $project->load(['type', 'technologies']);
 
         return view('projects.show', compact('project'));
     }
@@ -52,8 +63,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $technologies = Technology::all();
+        $project->load('technologies');
 
-        return view('projects.edit', compact('project', 'types'));
+        return view('projects.edit', compact('project', 'types', 'technologies'));
     }
 
     public function update(Request $request, Project $project)
@@ -63,9 +76,18 @@ class ProjectController extends Controller
             'author' => 'required|string|max:255',
             'type_id' => 'required|exists:types,id',
             'content' => 'nullable|string',
+            'technologies' => 'nullable|array',
+            'technologies.*' => 'exists:technologies,id',
         ]);
 
-        $project->update($data);
+        $project->update([
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'type_id' => $data['type_id'],
+            'content' => $data['content'] ?? null,
+        ]);
+
+        $project->technologies()->sync($data['technologies'] ?? []);
 
         return redirect()->route('projects.show', $project)
             ->with('success', 'Progetto aggiornato con successo!');
@@ -73,6 +95,7 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        $project->technologies()->detach();
         $project->delete();
 
         return redirect()->route('projects.index')
